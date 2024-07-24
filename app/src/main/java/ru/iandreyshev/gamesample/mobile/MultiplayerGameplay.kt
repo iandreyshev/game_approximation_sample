@@ -12,8 +12,8 @@ class MultiplayerGameplay(
     private val onDraw: suspend (List<GameView.IDrawable>) -> Unit
 ) {
 
-    private val dataCache = DataCache()
     private val backend = Backend(scope)
+    private val approximator = BallApproximator()
 
     fun start() {
         connectToServer()
@@ -22,7 +22,7 @@ class MultiplayerGameplay(
 
     private fun connectToServer() {
         backend.connect { messages ->
-            dataCache.submitNewData(messages)
+            approximator.submitNewData(messages)
         }
     }
 
@@ -39,9 +39,7 @@ class MultiplayerGameplay(
                     continue
                 }
 
-                println("Draw frame")
-
-                val objectsToDraw = dataCache.getDrawables(elapsedTime)
+                val objectsToDraw = approximator.getDrawables(elapsedTime)
                 onDraw(objectsToDraw)
 
                 lastFrameTime = systemTime

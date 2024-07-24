@@ -5,7 +5,7 @@ import ru.iandreyshev.gamesample.mobile.draw.BallDrawable
 import ru.iandreyshev.gamesample.mobile.draw.GameView
 import ru.iandreyshev.gamesample.mobile.draw.PlatformDrawable
 
-class DataCache {
+class BallApproximator {
 
     private var lastBall = BallDrawable()
     private var previousBall = BallDrawable()
@@ -29,7 +29,6 @@ class DataCache {
         messages.forEach {
             when (it.type) {
                 0 -> {
-                    println("NEW Y: ${it.y}")
                     lastBall = BallDrawable(
                         x = it.x,
                         y = it.y,
@@ -47,7 +46,6 @@ class DataCache {
                 }
 
                 2 -> {
-//                    println("SERVER TIME: ${it.serverTime}")
                     lastTime = it.serverTime
                 }
             }
@@ -60,15 +58,10 @@ class DataCache {
         this.elapsedTime += elapsedTime
 
         val movingPercent = (this.elapsedTime / timeLag).coerceAtMost(1f)
-//        println("MP: $movingPercent")
         val move = (lastBall.y - previousBall.y)
         val newY = move * movingPercent
 
-//        println("CALC Y: $newY")
-
         ballToDraw.y += newY
-
-//        println("DRA Y: ${ballToDraw.y}")
 
         return listOf(ballToDraw.copy(), platformToDraw)
     }

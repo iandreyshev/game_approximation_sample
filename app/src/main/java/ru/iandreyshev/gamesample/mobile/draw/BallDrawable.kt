@@ -22,7 +22,6 @@ data class BallDrawable(
     }
 
     override fun drawOn(canvas: Canvas) {
-        println("BALL AT: $yCenter")
         canvas.drawCircle(xCenter, yCenter, radius, paint)
     }
 
